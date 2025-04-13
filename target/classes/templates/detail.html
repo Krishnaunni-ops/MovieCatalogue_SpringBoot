@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${movie.title}">Movie Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img th:src="@{'https://image.tmdb.org/t/p/w500/' + ${movie.posterPath}}" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-8">
+            <h1 th:text="${movie.title}"></h1>
+            <p><strong>Release Date:</strong> <span th:text="${movie.releaseDate}"></span></p>
+            <p><strong>Rating:</strong> <span th:text="${movie.voteAverage}"></span></p>
+            <p th:text="${movie.overview}"></p>
+
+            <div th:if="${!isFavorite}">
+                <form th:action="@{/favorite/add}" method="post">
+                    <input type="hidden" name="id" th:value="${movie.id}"/>
+                    <input type="hidden" name="title" th:value="${movie.title}"/>
+                    <input type="hidden" name="overview" th:value="${movie.overview}"/>
+                    <input type="hidden" name="releaseDate" th:value="${movie.releaseDate}"/>
+                    <input type="hidden" name="posterPath" th:value="${movie.posterPath}"/>
+                    <input type="hidden" name="voteAverage" th:value="${movie.voteAverage}"/>
+                    <button class="btn btn-success mt-2" type="submit">❤️ Add to Favorites</button>
+                </form>
+            </div>
+
+            <div th:if="${isFavorite}">
+                <form th:action="@{'/favorite/remove/' + ${movie.id}}" method="post">
+                    <button class="btn btn-danger mt-2" type="submit">❌ Remove</button>
+                </form>
+            </div>
+
+            <a href="/" class="btn btn-outline-light mt-3">⬅ Back to Home</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
